@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ContentComponent } from './components/content/content.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'content', pathMatch: 'full' },
-  { path: 'content', component: ContentComponent },
-  { path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(M => M.AuthenticationModule) },
+  { path: 'content', loadChildren: () => import('./content/content.module').then(m => m.ContentModule) },
+  { path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule]
+  imports: [ RouterModule.forRoot(routes, { useHash: true }) ],
+  exports: [ RouterModule ]
 })
 export class AppRoutingModule { }
