@@ -4,12 +4,19 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HelpComponent } from './help/help.component';
 import { RouterModule } from '@angular/router';
+import { AuthenticationComponent } from './authentication/authentication.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialUiModule } from '../material-ui/material-ui.module';
 
 const routes = [
-  { path: '', component: LoginComponent, },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'help', component: HelpComponent },
+  {
+    path: '', component: AuthenticationComponent,
+    children: [
+      { path: 'login', component: AuthenticationComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'help', component: HelpComponent },
+    ],
+  },
 ];
 
 @NgModule({
@@ -17,15 +24,13 @@ const routes = [
     LoginComponent,
     RegisterComponent,
     HelpComponent,
+    AuthenticationComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-  ],
-  exports: [
-    LoginComponent,
-    RegisterComponent,
-    HelpComponent,
+    ReactiveFormsModule,
+    MaterialUiModule,
   ],
 })
 export class AuthenticationModule { }

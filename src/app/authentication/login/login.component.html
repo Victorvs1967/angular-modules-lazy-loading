@@ -1,1 +1,18 @@
-<p>login works!</p>
+<h1 mat-dialog-title class="title">Login</h1>
+<mat-divider></mat-divider>
+<form mat-dialog-content *ngIf="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label>Username</mat-label>
+    <input matInput type="text" placeholder="Username" formControlName="username">
+    <mat-hint>Enter username</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" placeholder="Password" formControlName="password">
+    <mat-hint>Enter password</mat-hint>
+  </mat-form-field>
+  <div mat-dialog-actions class="btn-group">
+    <button mat-raised-button type="submit" [disabled]="loginForm.invalid">Login</button>
+    <button mat-button class="register-link" type="button" (click)="signup()">If you aren't have account, register here...</button>
+  </div>
+</form>
