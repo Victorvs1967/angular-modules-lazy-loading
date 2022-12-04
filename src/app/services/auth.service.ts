@@ -31,12 +31,13 @@ export class AuthService {
   }
 
   signup(user: User): Observable<User> {
+    console.log(user);
     return of(user);
   }
 
   isLoggedUser(): Observable<User | null> {
     const user = window.sessionStorage.getItem('token');
-    if (user) return JSON.parse(user);
+    if (user) return of(JSON.parse(user));
     return of(null);
   }
 
