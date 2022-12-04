@@ -1,10 +1,14 @@
+@import '/src/styles/vars'
+
 .container
   width: 100%
-  height: calc(100% - 64px)
+  height: calc(100% - $header-height)
   position: relative
+  background: $main-color
   .content
     position: absolute
-    top: calc(50% - 64px)
+    top: calc(50% - $header-height)
     left: 53%
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, calc(-50% + $header-height))
     font-size: 3rem
+    color: $main-white
