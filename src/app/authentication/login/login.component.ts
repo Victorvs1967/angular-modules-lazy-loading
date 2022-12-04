@@ -2,7 +2,9 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { LoginInfo } from 'src/app/models/login-info.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { RegisterComponent } from '../register/register.component';
 
 @Component({
@@ -18,6 +20,7 @@ export class LoginComponent {
   }
 
   loginForm?: UntypedFormGroup;
+  isLoggedIn?: Observable<boolean>;
 
   constructor(
     public dialog: MatDialog,
@@ -25,6 +28,7 @@ export class LoginComponent {
     @Inject(MAT_DIALOG_DATA) public data: LoginInfo,
     private formBuilder: FormBuilder,
     private router: Router,
+    private auth: AuthService,
   ) { }
 
   ngOnInit() {
@@ -32,6 +36,7 @@ export class LoginComponent {
       username: [ '', Validators.required ],
       password: [ '', Validators.required ],
     });
+    this.isLoggedIn = this.auth.isLoggedIn;
   }
 
   onSubmit() {
@@ -42,9 +47,14 @@ export class LoginComponent {
     this.dialog.open(RegisterComponent, this.dialogConfig)
       .afterClosed()
       .subscribe(data => {
-        console.log(data);
-        this.dialogRef.close(true);
-        this.router.navigate(['/content']);
+        this.auth.signup(data)
+          .subscribe(data => {
+            this.dialogRef.close(true);
+            console.log(data);
+            console.log(this.isLoggedIn);
+            this.router.navigate(['/hello']);
+          }
+        ) 
       }
     );
   }
