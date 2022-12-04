@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -33,11 +32,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   ): boolean | UrlTree {
     let username = '';
     this.auth.isLoggedUser().subscribe(user => username = user ? user.username : '');
-    console.log(username);
-    if (username !== 'admin') {
-      return false;
+    if (username === 'admin') {
+      return true;
     }
-    return true;
+    alert('You must login as Admin to access this page...');
+    return false;
   }
 
 }

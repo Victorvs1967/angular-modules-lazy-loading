@@ -32,8 +32,7 @@ export class AuthenticationComponent {
       .subscribe(data => {
         this.auth.login(data)
           .subscribe(data => {
-            console.log(data);
-            this.isLoggedIn?.subscribe(status => console.log(status));
+            this.isLoggedIn?.subscribe(status => console.log(data, status));
             this.router.navigate(['/content']);
           }
         )
