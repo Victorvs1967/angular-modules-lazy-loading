@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MaterialUiModule } from '../material-ui/material-ui.module';
 import { HelloComponent } from './hello/hello.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { CrudComponent } from './crud/crud.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [ 
       { path: 'hello', component: HelloComponent }, 
+      { path: 'users', component: CrudComponent }, 
     ],
   },
 ];
@@ -21,7 +23,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ContentComponent,
-    HelloComponent
+    HelloComponent,
+    CrudComponent
   ],
   imports: [
     CommonModule,

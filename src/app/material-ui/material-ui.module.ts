@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTableModule } from '@angular/material/table';
 
 const COMPONENTS_MATERIAL_UI = [
   MatButtonModule,
@@ -21,6 +22,7 @@ const COMPONENTS_MATERIAL_UI = [
   MatListModule,
   MatMenuModule,
   MatToolbarModule,
+  MatTableModule,
 ];
 
 @NgModule({

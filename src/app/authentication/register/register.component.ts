@@ -25,6 +25,7 @@ export class RegisterComponent {
       username: [ '', [Validators.required] ],
       password: [ '', [Validators.required] ],
       email: [ '', [Validators.required, Validators.email] ],
+      gender: [ '', ],
     });
   }
 
