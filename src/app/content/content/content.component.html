@@ -1,17 +1,24 @@
-<mat-toolbar color="primary">
-  <a class="brand" routerLink=""><span>My Content</span></a>
-  <span class="spacer"></span>
-  <ul class="menu">
-    <li><button class="menu-item" mat-button routerLink="hello">Hello</button></li>
-    <li><button class="menu-item" mat-button routerLink="users">Users</button></li>
-    <li><button class="menu-item" mat-button routerLink="hello">Contact</button></li>
-  </ul>
-  <span class="spacer"></span>
-  <button mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-</mat-toolbar>
-<router-outlet></router-outlet>
+<div class="container">
+  <mat-toolbar color="primary">
+    <a class="brand" routerLink=""><span>My Content</span></a>
+    <span class="spacer"></span>
+    <ul class="menu">
+      <li><button class="menu-item" mat-button routerLink="hello">Hello</button></li>
+      <li><button class="menu-item" mat-button routerLink="users">Users</button></li>
+      <li><button class="menu-item" mat-button routerLink="hello">Contact</button></li>
+    </ul>
+    <span class="spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  <mat-toolbar color="primary">
+    <span class="footer-text">&copy; Victor Smirnov</span>
+  </mat-toolbar>
+</div>
 
 <mat-menu #menu>
   <button *ngIf="!(isLoggedIn | async)" mat-menu-item routerLink="/auth">

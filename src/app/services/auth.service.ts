@@ -31,7 +31,6 @@ export class AuthService {
   }
 
   signup(user: User): Observable<User> {
-    console.log(user);
     return of(user);
   }
 
