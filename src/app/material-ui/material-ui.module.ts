@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
+import { MatRadioModule } from '@angular/material/radio';
 
 const COMPONENTS_MATERIAL_UI = [
   MatButtonModule,
@@ -23,6 +24,7 @@ const COMPONENTS_MATERIAL_UI = [
   MatMenuModule,
   MatToolbarModule,
   MatTableModule,
+  MatRadioModule,
 ];
 
 @NgModule({

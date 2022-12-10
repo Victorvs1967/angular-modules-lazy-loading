@@ -1,5 +1,8 @@
 <div class="container">
-  <h3 class="title">Users List</h3>
+  <div class="title-wrap">
+    <h3 class="title">Users List</h3>
+    <button mat-icon-button (click)="signup()"><mat-icon style="color: #0000ff;">person_add</mat-icon></button>
+  </div>
   <mat-divider></mat-divider>
   <table mat-table *ngIf="users" [dataSource]="users">
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
