@@ -29,15 +29,27 @@ export class CrudService {
     return of(this.users);
   }
 
+  addUser(): Observable<User[]> {
+    this.dialogConfig.data = {};
+    const id = this.users.length + 1;
+    return this.dialog.open(RegisterComponent, this.dialogConfig)
+      .afterClosed()
+      .pipe(map(data => this.users = data ? [ ...this.users, { 'id': id, ...data } ] : [ ...this.users ]));
+  }
+
+  editUser(id: number): Observable<User[]> {
+    const index = this.users.findIndex(user => user.id === id);
+    const user = this.users[index];
+    this.dialogConfig.data = user;
+    
+    return this.dialog.open(RegisterComponent, this.dialogConfig)
+      .afterClosed()
+      .pipe(map(data => this.users[index] = data ? { 'id': id, ...data } : user));
+  }
+
   deleteUser(id: number): Observable<User[]> {
     const index = this.users.findIndex(user => user.id === id);
     return of(this.users.splice(index, 1));
-  }
-
-  addUser(): Observable<User[]> {
-    return this.dialog.open(RegisterComponent, this.dialogConfig)
-      .afterClosed()
-      .pipe(map(data => data ? this.users = [ ...this.users, { 'id': this.users.length + 1, ...data } ] : [ ...this.users ]));
   }
 
 }

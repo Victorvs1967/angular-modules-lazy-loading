@@ -23,6 +23,6 @@
   </mat-radio-group>  
   <div mat-dialog-actions class="btn-group">
     <button mat-raised-button class="btn btn-submit" type="submit" [disabled]="signupForm.invalid">Sign Up</button>
-    <button mat-button class="register-link" type="button" (click)="login()">If you are already have account, login here...</button>
+    <button *ngIf="!(isLoggedIn | async)" mat-button class="register-link" type="button" (click)="login()">If you are already have account, login here...</button>
   </div>
 </form>

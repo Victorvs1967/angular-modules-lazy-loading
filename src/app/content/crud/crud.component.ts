@@ -39,7 +39,7 @@ export class CrudComponent {
   }
 
   edit(id: number) {
-
+    this.crud.editUser(id).subscribe(_ => this.reloadData());
   }
 
 }

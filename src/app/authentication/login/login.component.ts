@@ -1,11 +1,9 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { LoginInfo } from 'src/app/models/login-info.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { RegisterComponent } from '../register/register.component';
+import { CrudService } from 'src/app/services/crud.service';
 
 @Component({
   selector: 'app-login',
@@ -23,12 +21,10 @@ export class LoginComponent {
   isLoggedIn?: Observable<boolean>;
 
   constructor(
-    public dialog: MatDialog,
     public dialogRef: MatDialogRef<LoginComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: LoginInfo,
     private formBuilder: FormBuilder,
-    private router: Router,
     private auth: AuthService,
+    private crud: CrudService, 
   ) { }
 
   ngOnInit() {
@@ -44,18 +40,6 @@ export class LoginComponent {
   }
 
   signup() {
-    this.dialog.open(RegisterComponent, this.dialogConfig)
-      .afterClosed()
-      .subscribe(data => {
-        this.auth.signup(data)
-          .subscribe(data => {
-            this.dialogRef.close(true);
-            console.log(data);
-            console.log(this.isLoggedIn);
-            this.router.navigate(['/hello']);
-          }
-        ) 
-      }
-    );
+    this.crud.addUser().subscribe(_ => this.dialogRef.close());
   }
 }

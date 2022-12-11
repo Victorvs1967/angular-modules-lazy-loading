@@ -30,10 +30,6 @@ export class AuthService {
 
   }
 
-  signup(user: User): Observable<User> {
-    return of(user);
-  }
-
   isLoggedUser(): Observable<User | null> {
     const user = window.sessionStorage.getItem('token');
     if (user) return of(JSON.parse(user));
