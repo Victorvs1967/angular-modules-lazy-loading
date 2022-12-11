@@ -21,12 +21,22 @@
 </div>
 
 <mat-menu #menu>
-  <button *ngIf="!(isLoggedIn | async)" mat-menu-item routerLink="/auth">
+  <button 
+    *ngIf="!(isLoggedIn | async)" 
+    mat-menu-item 
+    matTooltip="Login" 
+    matTooltipPosition="before"
+    routerLink="/auth"
+  >
     <mat-icon>login</mat-icon>
-    <span>Login</span>
   </button>
-  <button *ngIf="isLoggedIn | async" mat-menu-item (click)="logout()">
+  <button 
+    *ngIf="isLoggedIn | async" 
+    mat-menu-item 
+    matTooltip="Logout" 
+    matTooltipPosition="before"
+    (click)="logout()"
+  >
     <mat-icon>logout</mat-icon>
-    <span>Logout</span>
   </button>
 </mat-menu>
