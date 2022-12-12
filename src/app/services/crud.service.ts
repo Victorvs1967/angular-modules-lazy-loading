@@ -29,8 +29,8 @@ export class CrudService {
 
   // 
 
-  // private dataSourse: UsersDatasource;
-  private users: User[];
+  private dataSourse?: UsersDatasource;
+  private users: User[] = [];
 
   dialogConfig: MatDialogConfig = {
     width: '50rem',
@@ -40,15 +40,15 @@ export class CrudService {
   constructor(
     public dialog: MatDialog,
   ) {
-    this.users = [];
+    let users: User[] = [];
     get(this.usersListRef).then((data: any) => data.toJSON())
       .then(data => {
         for (let i in data) {
-          this.users.push(data[i]);
+          users.push(data[i]);
         }
+        this.dataSourse = new UsersDatasource([ ...users ]);
+        this.users = this.dataSourse.data.getValue();
       });
-    // this.dataSourse = new UsersDatasource([ ...data ]);
-    // this.users = this.dataSourse.data.getValue();
   }
 
   getUsers(): Observable<User[]> {
