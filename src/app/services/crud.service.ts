@@ -4,14 +4,32 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { User } from '../models/user.model';
 import { UsersDatasource } from '../data/users.datasource';
 import { RegisterComponent } from '../authentication/register/register.component';
-import data from 'src/app/data/users.json';
+
+// firebase
+import { initializeApp } from "firebase/app";
+import { Database, DatabaseReference, get, getDatabase, push, ref as dbRef, remove, set } from "firebase/database";
+import { FirebaseStorage, getDownloadURL, getStorage, ref } from "firebase/storage";
+import { environment } from 'src/environments/environment';
+// 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrudService {
-  
-  private dataSourse = (new UsersDatasource([ ...data ]));
+
+  // firebase
+  app = initializeApp({
+    databaseURL: environment.firebase.databaseURL,
+    storageBucket: environment.firebase.storageBucket,
+  });
+
+  storage: FirebaseStorage = getStorage(this.app);
+  db: Database = getDatabase(this.app);
+  usersListRef: DatabaseReference  = dbRef(this.db, 'users-list');
+
+  // 
+
+  // private dataSourse: UsersDatasource;
   private users: User[];
 
   dialogConfig: MatDialogConfig = {
@@ -22,11 +40,19 @@ export class CrudService {
   constructor(
     public dialog: MatDialog,
   ) {
-    this.users = this.dataSourse.data.getValue();
+    this.users = [];
+    get(this.usersListRef).then((data: any) => data.toJSON())
+      .then(data => {
+        for (let i in data) {
+          this.users.push(data[i]);
+        }
+      });
+    // this.dataSourse = new UsersDatasource([ ...data ]);
+    // this.users = this.dataSourse.data.getValue();
   }
 
   getUsers(): Observable<User[]> {
-    return of(this.users);
+    return this.users ? of(this.users) : of([]);
   }
 
   addUser(): Observable<User[]> {
