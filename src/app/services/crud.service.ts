@@ -86,7 +86,8 @@ export class CrudService {
   }
 
   private loadData() {
-    get(this.usersListRef).then((data: any) => data.toJSON())
+    get(this.usersListRef)
+      .then((data: any) => data.toJSON())
       .then(data => {
         for (let i in data) {
           this.users = [ ...this.users, data[i] ];
