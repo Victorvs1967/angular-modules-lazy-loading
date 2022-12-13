@@ -29,7 +29,7 @@ export class CrudService {
 // 
 
   dataSourse?: UsersDatasource;
-  users: User[];
+  users: User[] = [];
 
   dialogConfig: MatDialogConfig = {
     width: '50rem',
@@ -39,8 +39,8 @@ export class CrudService {
   constructor(
     public dialog: MatDialog,
   ) {
-    this.users = [];
     this.loadData();
+
   }
 
   getUsers(): Observable<User[]> {
@@ -67,7 +67,7 @@ export class CrudService {
     
     return this.dialog.open(RegisterComponent, this.dialogConfig)
       .afterClosed()
-      .pipe(map(user => {
+      .pipe(map((user: User) => {
         user.id = id;
         set(dbRef(this.db, 'users-list/'.concat(id)), user)
           .then(() => console.log('edit successfuly...'));
@@ -86,12 +86,15 @@ export class CrudService {
   }
 
   private loadData() {
+    let users: User[] = [];
     get(this.usersListRef)
       .then((data: any) => data.toJSON())
-      .then(data => {
-        for (let i in data) {
-          this.users = [ ...this.users, data[i] ];
+      .then((data: User[]) => {
+        for (let key in data) {
+          users = [ ...users, data[key] ];
         }
+        this.dataSourse = new UsersDatasource([ ...users ]);
+        this.users = this.dataSourse.data.getValue();
       });
   }
 }
