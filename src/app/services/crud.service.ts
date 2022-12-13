@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CrudService {
 
-  // firebase
+// firebase
   app = initializeApp({
     databaseURL: environment.firebase.databaseURL,
     storageBucket: environment.firebase.storageBucket,
@@ -26,10 +26,10 @@ export class CrudService {
   storage: FirebaseStorage = getStorage(this.app);
   db: Database = getDatabase(this.app);
   usersListRef: DatabaseReference  = dbRef(this.db, 'users-list');
-  // 
+// 
 
-  private dataSourse?: UsersDatasource;
-  private users: User[] = [];
+  dataSourse?: UsersDatasource;
+  users: User[];
 
   dialogConfig: MatDialogConfig = {
     width: '50rem',
@@ -39,42 +39,58 @@ export class CrudService {
   constructor(
     public dialog: MatDialog,
   ) {
-    let users: User[] = [];
-    get(this.usersListRef).then((data: any) => data.toJSON())
-      .then(data => {
-        for (let i in data) {
-          users.push(data[i]);
-        }
-        this.dataSourse = new UsersDatasource([ ...users ]);
-        this.users = this.dataSourse.data.getValue();
-      });
+    this.users = [];
+    this.loadData();
   }
 
   getUsers(): Observable<User[]> {
-    return this.users ? of(this.users) : of([]);
+    return of(this.users);
   }
 
   addUser(): Observable<User[]> {
-    this.dialogConfig.data = {};
-    const id = this.users.length + 1;
     return this.dialog.open(RegisterComponent, this.dialogConfig)
       .afterClosed()
-      .pipe(map(data => this.users = data ? [ ...this.users, { 'id': id, ...data } ] : [ ...this.users ]));
+      .pipe(map(user => {
+        const userRef = push(this.usersListRef);
+        user.id = userRef.key ?? '';
+        set(userRef, user)
+          .then(() => this.users.push(user))
+          .then(() => console.log('new user add successfuly...'));
+
+        return this.users;
+      }));
   }
 
-  editUser(id: number): Observable<User[]> {
+  editUser(id: string): Observable<User[]> {
     const index = this.users.findIndex(user => user.id === id);
-    const user = this.users[index];
-    this.dialogConfig.data = user;
+    this.dialogConfig.data = this.users[index];
     
     return this.dialog.open(RegisterComponent, this.dialogConfig)
       .afterClosed()
-      .pipe(map(data => this.users[index] = data ? { 'id': id, ...data } : user));
+      .pipe(map(user => {
+        user.id = id;
+        set(dbRef(this.db, 'users-list/'.concat(id)), user)
+          .then(() => console.log('edit successfuly...'));
+
+        return this.users;
+    }));
   }
 
-  deleteUser(id: number): Observable<User[]> {
+  deleteUser(id: string): Observable<User[]> {
+    remove(dbRef(this.db, 'users-list/'.concat(id)))
+      .then(() => console.log('delete successfuly...'));
+
     const index = this.users.findIndex(user => user.id === id);
-    return of(this.users.splice(index, 1));
+    this.users.splice(index, 1);
+    return of(this.users);
   }
 
+  private loadData() {
+    get(this.usersListRef).then((data: any) => data.toJSON())
+      .then(data => {
+        for (let i in data) {
+          this.users = [ ...this.users, data[i] ];
+        }
+      });
+  }
 }

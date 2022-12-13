@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { RegisterComponent } from 'src/app/authentication/register/register.component';
 import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { CrudService } from 'src/app/services/crud.service';
 
 @Component({
@@ -19,7 +15,6 @@ export class CrudComponent {
 
   constructor(
     private crud: CrudService, 
-    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -30,7 +25,7 @@ export class CrudComponent {
     this.crud.getUsers().subscribe(data => this.users = of([ ...data ]));
   }
 
-  delete(id: number) {
+  delete(id: string) {
     this.crud.deleteUser(id).subscribe(_ => this.reloadData());
   }
 
@@ -38,7 +33,7 @@ export class CrudComponent {
     this.crud.addUser().subscribe(_ => this.reloadData());
   }
 
-  edit(id: number) {
+  edit(id: string) {
     this.crud.editUser(id).subscribe(_ => this.reloadData());
   }
 

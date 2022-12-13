@@ -17,7 +17,7 @@
 
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef [width]="64"> ID </th>
-      <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+      <td class="id-cell" mat-cell *matCellDef="let user">{{ user.id }}</td>
     </ng-container>
     <ng-container matColumnDef="username">
       <th mat-header-cell *matHeaderCellDef> Username </th>
