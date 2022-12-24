@@ -23,6 +23,7 @@ export class FirebaseService {
   setDb(): Database {
     return getDatabase(this.app);
   }
+  
   setUsersListRef(): DatabaseReference {
     return dbRef(this.setDb(), 'users-list');
   }
