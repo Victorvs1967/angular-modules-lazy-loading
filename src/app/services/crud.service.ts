@@ -4,28 +4,16 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { User } from '../models/user.model';
 import { UsersDatasource } from '../data/users.datasource';
 import { RegisterComponent } from '../authentication/register/register.component';
-
-// firebase
-import { initializeApp } from "firebase/app";
-import { Database, DatabaseReference, get, getDatabase, push, ref as dbRef, remove, set } from "firebase/database";
-import { FirebaseStorage, getDownloadURL, getStorage, ref } from "firebase/storage";
-import { environment } from 'src/environments/environment';
-// 
+import { FirebaseService } from './firebase.service';
+import { Database, DatabaseReference, ref as dbRef, get, push, remove, set } from "firebase/database";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrudService {
 
-// firebase
-  app = initializeApp({
-    databaseURL: environment.firebase.databaseURL,
-    storageBucket: environment.firebase.storageBucket,
-  });
-
-  storage: FirebaseStorage = getStorage(this.app);
-  db: Database = getDatabase(this.app);
-  usersListRef: DatabaseReference  = dbRef(this.db, 'users-list');
+  db: Database;
+  usersListRef: DatabaseReference;
 // 
 
   dataSourse?: UsersDatasource;
@@ -38,9 +26,11 @@ export class CrudService {
 
   constructor(
     public dialog: MatDialog,
+    public firebaseService: FirebaseService,
   ) {
+    this.db = this.firebaseService.setDb();
+    this.usersListRef = this.firebaseService.setUsersListRef();
     this.loadData();
-
   }
 
   getUsers(): Observable<User[]> {
