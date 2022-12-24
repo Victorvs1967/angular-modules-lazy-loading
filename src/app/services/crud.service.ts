@@ -48,36 +48,38 @@ export class CrudService {
   }
 
   addUser(): Observable<User[]> {
-    return this.dialog.open(RegisterComponent, this.dialogConfig)
+    return this.dialog
+      .open(RegisterComponent, this.dialogConfig)
       .afterClosed()
-        .pipe(
-          map(user => {
-            const userRef = push(this.usersListRef);
-            user.id = userRef.key ?? '';
-            set(userRef, user)
-              .then(() => this.users.push(user))
-              .then(() => console.log('new user add successfuly...'));
+      .pipe(
+        map(user => {
+          const userRef = push(this.usersListRef);
+          user.id = userRef.key ?? '';
+          set(userRef, user)
+            .then(() => this.users.push(user))
+            .then(() => console.log('new user add successfuly...'));
 
-            return this.users;
-          })
-        );
+          return this.users;
+        })
+      );
   }
 
   editUser(id: string): Observable<User[]> {
     const index = this.users.findIndex(user => user.id === id);
     this.dialogConfig.data = this.users[index];
     
-    return this.dialog.open(RegisterComponent, this.dialogConfig)
+    return this.dialog
+      .open(RegisterComponent, this.dialogConfig)
       .afterClosed()
-        .pipe(
-          map((user: User) => {
-            user.id = id;
-            set(dbRef(this.db, 'users-list/'.concat(id)), user)
-              .then(() => console.log('edit successfuly...'));
+      .pipe(
+        map((user: User) => {
+          user.id = id;
+          set(dbRef(this.db, 'users-list/'.concat(id)), user)
+            .then(() => console.log('edit successfuly...'));
 
-            return this.users;
-          })
-        );
+          return this.users;
+        })
+      );
   }
 
   deleteUser(id: string): Observable<User[]> {
